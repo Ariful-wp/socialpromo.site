@@ -1,2 +1,0 @@
-# socialpromo.site
-socialpromo.site
