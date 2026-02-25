@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -65,7 +65,7 @@
     }
 
     /* --- Option 1: CSS hide badge --- */
-    div.fixed.z-50.text-white.bottom-4.right-4 {
+    #base44-edit-badge {
       display: none !important;
       visibility: hidden !important;
     }
@@ -114,13 +114,13 @@
 
     // --- Option 2: Instant remove on DOM ready ---
     document.addEventListener("DOMContentLoaded", () => {
-      const badge = document.querySelector('div.fixed.z-50.text-white.bottom-4.right-4');
+      const badge = document.querySelector('base44-edit-badge');
       if (badge) badge.remove();
     });
 
     // --- Option 3: MutationObserver ---
     const removeBadge = () => {
-      const badge = document.querySelector('div.fixed.z-50.text-white.bottom-4.right-4');
+      const badge = document.querySelector('base44-edit-badge');
       if (badge) badge.remove();
     };
 
@@ -137,4 +137,4 @@
     });
   </script>
 </body>
-</html>
+</html>a
