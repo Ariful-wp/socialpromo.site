@@ -1,0 +1,140 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Social Promo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020817">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #020817;
+      font-family: sans-serif;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Black splash overlay */
+    .iframe-cover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000; /* fully black */
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 1.2rem;
+      z-index: 9999;
+      transition: opacity 0.8s ease;
+    }
+
+    .iframe-cover.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Spinner animation */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* --- Option 1: CSS hide badge --- */
+    #base44-edit-badge {
+      display: none !important;
+      visibility: hidden !important;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    id="main-iframe"
+    src="https://ariful24.base44.app"
+    allow="microphone; fullscreen; autoplay"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals">
+  </iframe>
+
+  <!-- Black overlay splash with loading -->
+  <div class="iframe-cover" id="cover">
+    <div class="spinner"></div>
+    <div>Getting ready for you...</div>
+  </div>
+
+  <script>
+    const iframe = document.getElementById("main-iframe");
+    const cover = document.getElementById("cover");
+
+    // Load cached CSS & Scripts instantly from localStorage
+    function injectCachedAssets() {
+      const cachedCSS = localStorage.getItem("customCSS");
+      const cachedScripts = JSON.parse(localStorage.getItem("customScripts") || "[]");
+
+      if (cachedCSS) {
+        const style = document.createElement("style");
+        style.innerHTML = cachedCSS;
+        document.head.appendChild(style);
+      }
+
+      cachedScripts.forEach(scriptObj => {
+        try {
+          const func = new Function(scriptObj.code);
+          func();
+        } catch (err) {
+          console.error("Cached script error:", err);
+        }
+      });
+    }
+
+    injectCachedAssets();
+
+    // --- Option 2: Instant remove on DOM ready ---
+    document.addEventListener("DOMContentLoaded", () => {
+      const badge = document.querySelector('base44-edit-badge');
+      if (badge) badge.remove();
+    });
+
+    // --- Option 3: MutationObserver ---
+    const removeBadge = () => {
+      const badge = document.querySelector('base44-edit-badge');
+      if (badge) badge.remove();
+    };
+
+    removeBadge(); // Try immediately
+
+    const observer = new MutationObserver(removeBadge);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Hide black splash after iframe fully loads
+    iframe.addEventListener("load", () => {
+      setTimeout(() => {
+        cover.classList.add("hidden");
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
